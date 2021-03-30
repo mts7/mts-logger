@@ -7,6 +7,12 @@ from colorama import init, Back, Fore, Style
 init()
 
 
+def get_logger(
+        name,
+        mode: str = 'warning', output: str = 'out', log_file: str = '', use_error: bool = True):
+    return Logger(name, mode, output, log_file, use_error)
+
+
 class Logger(logging.Logger):
     """Encapsulate the logging methods.
 

@@ -1,9 +1,9 @@
 import setuptools
 
-VERSION = '0.2.1'
+VERSION = '0.2.3'
 
 setuptools.setup(
-    name='mts_logging',
+    name='mts_logger',
     version=VERSION,
     description='Another Python logger',
     url='https://github.com/mts7/mts-logger',

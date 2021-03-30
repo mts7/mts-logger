@@ -1,3 +1,1 @@
-from importlib.metadata import version
-
-__version__ = version('mtslogger')
+from .main import get_logger
