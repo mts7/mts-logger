@@ -1,6 +1,6 @@
 import setuptools
 
-VERSION = '0.2.3'
+VERSION = '0.2.4'
 
 setuptools.setup(
     name='mts_logger',
@@ -19,6 +19,7 @@ setuptools.setup(
     ],
     python_requires='>=3.8',
     install_requires=[
-        'colorama'
+        'colorama',
+        'python-dotenv',
     ],
 )

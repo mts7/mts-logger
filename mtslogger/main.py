@@ -1,16 +1,8 @@
 import logging
+import os
 import sys
+from colorama import Back, Fore, Style
 from datetime import datetime
-
-from colorama import init, Back, Fore, Style
-
-init()
-
-
-def get_logger(
-        name,
-        mode: str = 'warning', output: str = 'out', log_file: str = '', use_error: bool = True):
-    return Logger(name, mode, output, log_file, use_error)
 
 
 class Logger(logging.Logger):
@@ -69,7 +61,7 @@ class Logger(logging.Logger):
         self.output = output
         self.use_error = use_error
 
-    def log(self, message: str):
+    def log(self, message: str, *args, **kwargs):
         """Log a message with the current log level.
 
         This method can be used to log an entry no matter the mode because it
@@ -91,7 +83,7 @@ class Logger(logging.Logger):
         # noinspection PyArgumentList
         function_to_call(message)
 
-    def debug(self, message: str):
+    def debug(self, message: str, *args, **kwargs):
         """Log the message at the debug log level.
 
         Parameters
@@ -101,7 +93,7 @@ class Logger(logging.Logger):
         """
         self.write('debug', message)
 
-    def error(self, message: str):
+    def error(self, message: str, *args, **kwargs):
         """Log the message at the error log level.
 
         Parameters
@@ -111,7 +103,7 @@ class Logger(logging.Logger):
         """
         self.write('error', message)
 
-    def info(self, message: str):
+    def info(self, message: str, *args, **kwargs):
         """Log the message at the info log level.
 
         Parameters
@@ -121,7 +113,7 @@ class Logger(logging.Logger):
         """
         self.write('info', message)
 
-    def warning(self, message: str):
+    def warning(self, message: str, *args, **kwargs):
         """Log the message at the warning log level.
 
         Parameters
@@ -167,3 +159,34 @@ class Logger(logging.Logger):
                     print(prefix + message, file=fileObject)
             else:
                 print(date + ' ' + self.message_colors[level] + message + Style.RESET_ALL, file=output)
+
+
+def get_logger(
+        name,
+        mode: str = None, output: str = None, log_file: str = None, use_error: bool = None) -> Logger:
+    """Gets the logger with the specified arguments.
+
+    Parameters
+    ----------
+    name : str
+    mode : str
+    output : str
+    log_file : str
+    use_error : bool
+
+    Returns
+    -------
+    Logger
+    """
+    # use the environment variables or default values if the arguments are None
+    if mode is None:
+        mode = os.environ.get('log_level') if os.environ.get('log_level') is not None else 'warning'
+    if output is None:
+        output = os.environ.get('log_output') if os.environ.get('log_output') is not None else 'out'
+    if log_file is None:
+        if os.environ.get('log_file') is not None:
+            log_file = os.environ.get('log_file')
+    if use_error is None:
+        use_error = os.environ.get('log_user_error') if os.environ.get('log_user_error') is not None else True
+
+    return Logger(name, mode, output, log_file, use_error)
